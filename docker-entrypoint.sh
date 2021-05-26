@@ -39,5 +39,8 @@
 # Replace this text and the remainder of the file
 # with your formatter implementation...
 
-# Format your data...
-echo "Hello World!"
+if [ -n "$DT_DATASET_OUTPUT_FORMAT" ]; then
+  python source/converter.py
+else
+  python source/formatter.py
+fi
