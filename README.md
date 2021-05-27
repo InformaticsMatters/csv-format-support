@@ -9,27 +9,9 @@
 
 ---
 
->   Replace the following template text with your own documentation
+A repository for the **Informatics Matters DataTier dataset
+csv-format-support container image implementations**.
 
-A template repository for **Informatics Matters DataTier dataset
-format-support container image implementations**.
-
-Use this repository to start development of a container image that can be
-used by the DataTier Manager to support the loading of a dataset _type_.
-
-You are required to preserve and adhere to the design rules
-that can be found in this repository's `RULES.md`. 
-
-Please take time to familiarise yourself with following sections before
-discarding this text. Failing to comply with what's discussed here
-may result in the image not passing any future automated acceptance testing
-that may be deployed.
-
--   Building
--   Testing
--   Required image tags
--   Built-in GitHub Actions
--   Updating the badge links
 
 ## Building
 You should be able to build your format-support image using `docker`: -
@@ -40,12 +22,15 @@ Or `docker-compose`: -
 
     $ IMAGE_NAME=${PWD##*/} docker-compose build
 
->   The expectation is that you're using a recent Docker engine
-    (like `20.10.2`) and docker-compose utility (like `1.27.4`).
-
 ## Testing
-Familiarise yourself with `TESTING.md`, which describes
-a strategy you can replicate while developing and testing your image.
+Familiarise yourself with `TESTING.md`, which describes the testing strategy 
+
+For more information on the tests for this repo, see [test/readme.md]
+A simple shell script cas been written to run all the tests. The command is: -
+
+    $ ./test/runtests.sh
+
+The remaining text in this file has been left unmodified from the template for information.
 
 ## Required image tags
 The DataTier Manager will only execute formatter images tagged `:stable`

@@ -7,4 +7,4 @@ Process an input chemistry/csv file and create
 
 ## converter.py
 
-Convert from CSV file to file with a selected mime-type.
+Convert from CSV file to file with a selected mime-type (to be completed).
