@@ -141,20 +141,20 @@ def check_file_format():
         # Second column should be 'uuid' if not generating uuid
         second_col = next(input_cols)
 
-        if (processing_vars['header']):
+        if processing_vars['header']:
             smiles = old_headings[smiles_col]
             uuid = old_headings[second_col]
         else:
             smiles = smiles_col
             uuid = second_col
 
-        if not noniso_smiles (smiles)[1]:
-             event_logger.info('Problem with file - First column must be smiles')
-             sys.exit(1)
+        if not noniso_smiles(smiles)[1]:
+            event_logger.info('Problem with file - First column must be smiles')
+            sys.exit(1)
 
         if not processing_vars['generate_uuid'] and not is_valid_uuid(uuid):
-             event_logger.event('Problem with file - Second column heading must be uuid')
-             sys.exit(1)
+            event_logger.event('Problem with file - Second column heading must be uuid')
+            sys.exit(1)
 
         if processing_vars['generate_uuid'] and not is_valid_uuid(uuid):
             # If generating uuid and second column is not uuid then add uuid to output headings.
@@ -173,6 +173,7 @@ def write_output_csv_fail(csv_rewriter, input_row, uuid_col):
     failure. No uuid is generated in this case.
     :param csv_rewriter: Dict Object
     :param input_row:
+    :param uuid_col:
     :returns: uuid for insert into file.
     """
 
@@ -187,6 +188,7 @@ def write_output_csv(csv_rewriter, input_row, uuid_col):
     """Write the given record to the output file with a generated uuid
     :param csv_rewriter: Dict Object
     :param input_row:
+    :param uuid_col:
     :returns: uuid for insert into file.
     """
 
@@ -217,6 +219,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
     :param output_csv_file: CSV File to re-write if adding uuid
     :param output_csv_headings: CSV File headings
     :param smiles_col: the column in the input file that is the smiles.
+    :param uuid_col: the column in the input/output file that is the uuid.
     :returns: The number of items processed and the number of failures
     """
 
@@ -226,8 +229,10 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
 
     # Jump the first line if there is a header
     if processing_vars['header']:
-         next(input_reader)
+        next(input_reader)
 
+    # This line is here to avoid a lint warning
+    csv_rewriter = object()
     if processing_vars['generate_uuid']:
         # End and Close the SDF file if there are no more molecules.
         csv_rewriter = csv.DictWriter(output_csv_file, fieldnames=output_csv_headings,
@@ -246,7 +251,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
         if not noniso[1]:
             num_failed += 1
             if processing_vars['generate_uuid']:
-                 write_output_csv_fail(csv_rewriter, row, uuid_col)
+                write_output_csv_fail(csv_rewriter, row, uuid_col)
             event_logger.info('Record %s failed to standardize in RDKit', num_processed)
             continue
 
@@ -263,7 +268,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
             else:
                 num_failed += 1
                 if processing_vars['generate_uuid']:
-                     write_output_csv_fail(csv_rewriter, row)
+                    write_output_csv_fail(csv_rewriter, row, uuid_col)
                 event_logger.info('Record %s did not contain a valid uuid', num_processed)
                 continue
 
@@ -276,7 +281,6 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
                                 'hac': noniso[1].GetNumHeavyAtoms(),
                                 'molecule-uuid': molecule_uuid,
                                 'rec_number': num_processed})
-
 
     if processing_vars['generate_uuid']:
         # End and Close the CSV file if there are no more rows in the input file.
