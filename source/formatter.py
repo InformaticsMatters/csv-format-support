@@ -1,5 +1,5 @@
-"""Process an input chemistry/csv file and create
-1. A csv file containing data to load into database
+"""Process an input chemistry/smi file and create
+1. A smi (csv file with smiles as it's first column)  file containing data to load into database
 2. An (optionally) rewritten input file containing a uuid identifier
 """
 import logging
@@ -185,7 +185,7 @@ def write_output_csv_fail(csv_rewriter, input_row, uuid_col):
 
 
 def write_output_csv(csv_rewriter, input_row, uuid_col):
-    """Write the given record to the output file with a generated uuid
+    """Write the given record to the output smi file with a generated uuid
     :param csv_rewriter: Dict Object
     :param input_row:
     :param uuid_col:
@@ -216,8 +216,8 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
 
     :param output_writer: DictWriter instance of csv output file
     :param input_reader: DictReader instance of input csv to process
-    :param output_csv_file: CSV File to re-write if adding uuid
-    :param output_csv_headings: CSV File headings
+    :param output_csv_file: SMI File to re-write if adding uuid
+    :param output_csv_headings: SMI File headings
     :param smiles_col: the column in the input file that is the smiles.
     :param uuid_col: the column in the input/output file that is the uuid.
     :returns: The number of items processed and the number of failures
@@ -234,7 +234,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
     # This line is here to avoid a lint warning
     csv_rewriter = object()
     if processing_vars['generate_uuid']:
-        # End and Close the SDF file if there are no more molecules.
+        # Open smi file if (re)generating uuid column
         csv_rewriter = csv.DictWriter(output_csv_file, fieldnames=output_csv_headings,
                                       dialect=dialect)
         if processing_vars['header']:
@@ -258,7 +258,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
         num_mols += 1
         if processing_vars['generate_uuid']:
             # If we are generating a UUID for the molecules then we need to rewrite
-            # the input record to a new csv file.
+            # the input record to a new smi file.
             molecule_uuid = write_output_csv(csv_rewriter, row, uuid_col)
         else:
             # if we are not generating a UUID then the molecule name must already contain
@@ -283,7 +283,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
                                 'rec_number': num_processed})
 
     if processing_vars['generate_uuid']:
-        # End and Close the CSV file if there are no more rows in the input file.
+        # End and Close the SMI file if there are no more rows in the input file.
         output_csv_file.close()
 
     return num_processed, num_failed, num_mols
@@ -291,7 +291,7 @@ def process_file(output_writer, input_reader, output_csv_file, output_csv_headin
 
 if __name__ == '__main__':
     # Say Hello
-    basic_logger.info('csv-format-support')
+    basic_logger.info('smi-format-support')
 
     # Display environment variables
     basic_logger.info('DT_DATASET_FILENAME=%s', dataset_filename)
@@ -302,7 +302,7 @@ if __name__ == '__main__':
     processing_vars = get_processing_variables()
     basic_logger.info('generate_uuid=%s', processing_vars['generate_uuid'])
     basic_logger.info('header=%s', processing_vars['header'])
-    basic_logger.info('CSV Data Loader')
+    basic_logger.info('SMI Data Loader')
 
     # Suppress basic RDKit logging...
     RDLogger.logger().setLevel(RDLogger.ERROR)

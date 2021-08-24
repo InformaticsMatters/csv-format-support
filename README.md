@@ -1,16 +1,16 @@
-# csv-format-support
+# smi-format-support
 
-[![build](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/build.yaml/badge.svg)](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/build.yaml)
-[![publish latest](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-latest.yaml/badge.svg)](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-latest.yaml)
-[![publish tag](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-tag.yaml/badge.svg)](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-tag.yaml)
-[![publish stable](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-stable.yaml/badge.svg)](https://github.com/InformaticsMatters/csv-format-support/actions/workflows/publish-stable.yaml)
+[![build](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/build.yaml/badge.svg)](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/build.yaml)
+[![publish latest](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-latest.yaml/badge.svg)](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-latest.yaml)
+[![publish tag](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-tag.yaml/badge.svg)](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-tag.yaml)
+[![publish stable](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-stable.yaml/badge.svg)](https://github.com/InformaticsMatters/smi-format-support/actions/workflows/publish-stable.yaml)
 
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/csv-format-support)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/informaticsmatters/smi-format-support)
 
 ---
 
 A repository for the **Informatics Matters DataTier dataset
-csv-format-support container image implementations**.
+smi-format-support container image implementations**.
 
 
 ## Building

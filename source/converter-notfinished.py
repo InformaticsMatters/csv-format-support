@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Convert from CSV file to file with a selected mime-type
+"""Convert from SMI file to file with a selected mime-type
 """
 import json
 import uuid

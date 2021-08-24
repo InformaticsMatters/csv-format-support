@@ -9,7 +9,7 @@
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=1
-export DATASET_FILENAME=test1-csv.csv
+export DATASET_FILENAME=test1-csv.smi
 export DATASET_EXTRA_VARIABLES=
 export DATASET_OUTPUT_FORMAT=
 rm -rf -f test/${TEST_TYPE}/${TEST_DIR}/output
@@ -22,7 +22,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=1
-export DATASET_FILENAME=test1-csv-no-heading.csv
+export DATASET_FILENAME=test1-csv-no-heading.smi
 export DATASET_EXTRA_VARIABLES='header=False'
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -34,7 +34,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=2
-export DATASET_FILENAME=test2-tab.csv
+export DATASET_FILENAME=test2-tab.smi
 export DATASET_EXTRA_VARIABLES=
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -45,7 +45,7 @@ IMAGE_NAME=${PWD##*/} docker-compose up
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=3
-export DATASET_FILENAME=test3-csv-uuid.csv
+export DATASET_FILENAME=test3-csv-uuid.smi
 export DATASET_EXTRA_VARIABLES='generate_uuid=False'
 export DATASET_OUTPUT_FORMAT=
 rm -rf -f test/${TEST_TYPE}/${TEST_DIR}/output
@@ -58,7 +58,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=3
-export DATASET_FILENAME=test3-csv-uuid-no-heading.csv
+export DATASET_FILENAME=test3-csv-uuid-no-heading.smi
 export DATASET_EXTRA_VARIABLES='generate_uuid=False&header=False'
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -70,33 +70,33 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=3
-export DATASET_FILENAME=test3-csv-uuid.csv
+export DATASET_FILENAME=test3-csv-uuid.smi
 export DATASET_EXTRA_VARIABLES=''
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
 IMAGE_NAME=${PWD##*/} docker-compose up
 mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile3-3.csv
-mv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid.csv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid3-3.csv
+mv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid.smi test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid3-3.smi
 
 # -----------------------------------------------------------------------------
 # Success test 3.4 - comma separated, uuid exists, gemerate, no header
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=3
-export DATASET_FILENAME=test3-csv-uuid-no-heading.csv
+export DATASET_FILENAME=test3-csv-uuid-no-heading.smi
 export DATASET_EXTRA_VARIABLES='header=False'
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
 IMAGE_NAME=${PWD##*/} docker-compose up
 mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile3-4.csv
-mv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid-no-heading.csv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid-no-heading3-4.csv
+mv test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid-no-heading.smi test/${TEST_TYPE}/${TEST_DIR}/output/test3-csv-uuid-no-heading3-4.smi
 
 # -----------------------------------------------------------------------------
 # Success test 4.1 - Process with non-fatal errors: comma separated, invalid smiles, header
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=4
-export DATASET_FILENAME=test4-csv-smiles-non-fatal-error.csv
+export DATASET_FILENAME=test4-csv-smiles-non-fatal-error.smi
 export DATASET_EXTRA_VARIABLES=''
 export DATASET_OUTPUT_FORMAT=
 rm -rf -f test/${TEST_TYPE}/${TEST_DIR}/output
@@ -109,7 +109,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=4
-export DATASET_FILENAME=test4-csv-uuid-non-fatal-error.csv
+export DATASET_FILENAME=test4-csv-uuid-non-fatal-error.smi
 export DATASET_EXTRA_VARIABLES='generate_uuid=False'
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -121,7 +121,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=success
 export TEST_DIR=4
-export DATASET_FILENAME=test4-csv-uuid-non-fatal-error.csv
+export DATASET_FILENAME=test4-csv-uuid-non-fatal-error.smi
 export DATASET_EXTRA_VARIABLES=''
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -133,7 +133,7 @@ mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TE
 # -----------------------------------------------------------------------------
 export TEST_TYPE=failure
 export TEST_DIR=1
-export DATASET_FILENAME=test1-csv-fail.csv
+export DATASET_FILENAME=test1-csv-fail.smi
 export DATASET_EXTRA_VARIABLES=
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
@@ -144,7 +144,7 @@ IMAGE_NAME=${PWD##*/} docker-compose up
 # -----------------------------------------------------------------------------
 export TEST_TYPE=failure
 export TEST_DIR=1
-export DATASET_FILENAME=test1-csv-fail-no-heading.csv
+export DATASET_FILENAME=test1-csv-fail-no-heading.smi
 export DATASET_EXTRA_VARIABLES='header=False'
 export DATASET_OUTPUT_FORMAT=
 mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
