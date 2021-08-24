@@ -8,6 +8,7 @@ import traceback
 import csv
 import sys
 import uuid
+import gzip
 
 from typing import Dict
 
@@ -109,6 +110,39 @@ def is_valid_uuid(value: str):
     except ValueError:
         return False
 
+
+def uncompress_file(dataset_input_path, dataset_filename):
+    """"
+    Uncompress the file into the same location
+    Remove .gz from filename
+    """
+    uncompressed_filename = os.path.splitext(dataset_filename)[0]
+    uncompressed_path = os.path.join(dataset_input_path, uncompressed_filename)
+    fp = open(uncompressed_path, "w")
+    with gzip.open(input_filename, 'rt') as input_csv:
+        data = input_csv.read()
+        fp.write(data)
+        fp.close()
+
+    return uncompressed_path, uncompressed_filename
+
+
+def compress_file(output_filename, dataset_output_path, dataset_filename):
+    """"
+    Recompress the file into the same location
+    Remove the uncompressed file
+    """
+    compressed_path = \
+        os.path.join(dataset_output_path, dataset_filename)
+    fp = gzip.open(compressed_path, "wb")
+    with open(output_filename, 'rb') as output_csv:
+        data = bytearray(output_csv.read())
+        fp.write(data)
+        fp.close()
+
+    # Tidy up
+    os.remove(output_filename)
+    os.remove(input_filename)
 
 def check_file_format():
     """Identify delimiter, perform basic file level checks and return column headings
@@ -308,7 +342,18 @@ if __name__ == '__main__':
     RDLogger.logger().setLevel(RDLogger.ERROR)
 
     basic_logger.info('Checking input file format %s...', dataset_filename)
+
+    # Non-invasive way of allowing gzip files to be sent.
+    # If the input file is a gzip, then uncompress for processing
+    # Recompress on exit
     input_filename = os.path.join(dataset_input_path, dataset_filename)
+    process_filename = dataset_filename
+    compress = False
+    if dataset_filename.endswith('.gz'):
+        compress = True
+        input_filename, process_filename = \
+            uncompress_file(dataset_input_path, dataset_filename)
+
     dialect, input_headings, output_headings, input_smiles_col, input_uuid_col = check_file_format()
 
     # Open the file we'll write the standardised data set to.
@@ -324,12 +369,17 @@ if __name__ == '__main__':
 
         output_csv: object = None
         if processing_vars['generate_uuid']:
-            output_filename = os.path.join(dataset_output_path, dataset_filename)
+            output_filename = \
+                os.path.join(dataset_output_path, process_filename)
             output_csv = open(output_filename, 'wt')
 
         processed, failed, mols =\
-            process_file(writer, reader, output_csv, output_headings, input_smiles_col,
+            process_file(writer, reader, output_csv,
+                         output_headings, input_smiles_col,
                          input_uuid_col)
+
+    if compress:
+        compress_file(output_filename, dataset_output_path, dataset_filename)
 
     # Summary
     event_logger.info('{:,} processed molecules'.format(processed))
