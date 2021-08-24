@@ -80,7 +80,7 @@ def get_processing_variables():
         return process_vars
 
     except:  # pylint: disable=bare-except
-        event_logger.info('Problem decoding parameters - please check format')
+        event_logger.error('Problem decoding parameters - please check format')
         sys.exit(1)
 
 
@@ -95,7 +95,7 @@ def noniso_smiles(smiles: str):
         return noniso
     except:  # pylint: disable=bare-except
         traceback.print_exc()
-        event_logger.info('%s Caused a failure in RDKit', row[smiles_col])
+        event_logger.error('%s Caused a failure in RDKit', row[smiles_col])
         sys.exit(1)
 
 
@@ -155,7 +155,7 @@ def check_file_format():
         try:
             input_dialect = sniffer.sniff(input_csv.read(1024))
         except:  # pylint: disable=bare-except
-            event_logger.info('Problem with file delimiter - must be a comma or a tab')
+            event_logger.error('Problem with file delimiter - must be a comma or a tab')
             sys.exit(1)
 
     with open(input_filename, 'rt') as input_csv:
@@ -183,11 +183,11 @@ def check_file_format():
             uuid = second_col
 
         if not noniso_smiles(smiles)[1]:
-            event_logger.info('Problem with file - First column must be smiles')
+            event_logger.error('Problem with file - First column must be smiles')
             sys.exit(1)
 
         if not processing_vars['generate_uuid'] and not is_valid_uuid(uuid):
-            event_logger.event('Problem with file - Second column heading must be uuid')
+            event_logger.error('Problem with file - Second column heading must be uuid')
             sys.exit(1)
 
         if processing_vars['generate_uuid'] and not is_valid_uuid(uuid):
