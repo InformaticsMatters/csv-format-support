@@ -154,6 +154,18 @@ IMAGE_NAME=${PWD##*/} docker-compose up
 mv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile.csv test/${TEST_TYPE}/${TEST_DIR}/output/tmploaderfile1-2.csv
 
 # -----------------------------------------------------------------------------
+# Success test 6.1 - comma separated, header with annotation file
+# -----------------------------------------------------------------------------
+export TEST_TYPE=success
+export TEST_DIR=6
+export DATASET_FILENAME=test1-csv.smi
+export DATASET_EXTRA_VARIABLES=
+export DATASET_OUTPUT_FORMAT=
+rm -rf -f test/${TEST_TYPE}/${TEST_DIR}/output
+mkdir -p test/${TEST_TYPE}/${TEST_DIR}/output
+IMAGE_NAME=${PWD##*/} docker-compose up
+
+# -----------------------------------------------------------------------------
 # Failure test 1.1 - comma separated - fail due to no smiles column
 # -----------------------------------------------------------------------------
 export TEST_TYPE=failure
