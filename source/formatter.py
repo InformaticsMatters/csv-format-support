@@ -18,6 +18,8 @@ from typing import Dict
 from standardize_molecule import standardize_to_noniso_smiles
 from data_manager_metadata.metadata import (FieldsDescriptorAnnotation,
                                             get_annotation_filename)
+from data_manager_metadata.annotation_utils import est_schema_field_type
+
 from rdkit import Chem, RDLogger
 
 # The columns *every* standard file is expected to contain.
@@ -27,9 +29,9 @@ _OUTPUT_COLUMNS = ['smiles', 'inchis', 'inchik', 'hac', 'molecule-uuid',
 
 # Base FieldsDescriptor fields to create an SDF annotation with.
 _BASE_FIELD_NAMES = {
-    'smiles': {'type': 'text', 'description': 'Smiles',
+    'smiles': {'type': 'string', 'description': 'Smiles',
                'required': True, 'active': True},
-    'uuid': {'type': 'text', 'description': 'Unique Identifier',
+    'uuid': {'type': 'string', 'description': 'Unique Identifier',
              'required': True, 'active': True},
     }
 
@@ -126,28 +128,12 @@ def is_valid_uuid(value: str):
         return False
 
 
-# Supporting function for json_schema
-def get_type(value: str) -> str:
-    """"
-    Determines the type based on the field value
-    :returns one of 'text', 'float', 'integer'
-    """
-    try:
-        float_number = float(value)
-    except ValueError:
-        return 'text'
-    else:
-        if float_number.is_integer():
-            return 'integer'
-        return 'float'
-
-
 def check_name_in_fields(field, value, fields) -> dict:
     """ check the name in the properties. If the name does not exist
     then add the name and type to the fields dictionary.
     """
     if field not in fields:
-        fields[field] = get_type(value)
+        fields[field] = est_schema_field_type(value)
     return fields
 
 
@@ -252,6 +238,12 @@ def check_file_format():
     return input_dialect, old_headings, new_headings, smiles_col, second_col
 
 
+def _log_progress(num_processed):
+
+    if not num_processed % 50000:
+        event_logger.info('%s records processed', num_processed)
+
+
 def write_output_csv_fail(csv_rewriter, input_row, uuid_col):
     """Still write the given record to the output file in the case of a smiles
     standardisation failure. No uuid is generated in this case.
@@ -317,7 +309,7 @@ def process_file(output_writer, input_reader, output_csv_file,
 
     # Note, if there are no headings then the code can't find the smiles and
     # uuid to put in the FieldsDescriptor
-    fields = {smiles_col : 'text', uuid_col: 'text'}
+    fields = {smiles_col : 'string', uuid_col: 'string'}
 
     # Jump the first line if there is a header
     if processing_vars['header']:
@@ -335,6 +327,7 @@ def process_file(output_writer, input_reader, output_csv_file,
 
     for row in input_reader:
         num_processed += 1
+        _log_progress (num_processed)
 
         # Standardise the smiles and return a standard molecule.
         noniso = noniso_smiles(row[smiles_col])
@@ -367,11 +360,11 @@ def process_file(output_writer, input_reader, output_csv_file,
                 continue
 
         inchis = Chem.inchi.MolToInchi(noniso[1], '')
-        inchik = Chem.inchi.InchiToInchiKey(inchis)
 
         # Write the standardised data to the tmploadercsv file
         output_writer.writerow({'smiles': noniso[0],
-                                'inchis': inchis, 'inchik': inchik,
+                                'inchis': inchis,
+                                'inchik': Chem.inchi.InchiToInchiKey(inchis),
                                 'hac': noniso[1].GetNumHeavyAtoms(),
                                 'molecule-uuid': molecule_uuid,
                                 'rec_number': num_processed})
